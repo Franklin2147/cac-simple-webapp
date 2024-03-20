@@ -23,5 +23,37 @@ steps:
       - '--port'
       - '3000'  # Specify the port to expose
 
+  # Create an external HTTP(S) load balancer
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: 
+      - 'compute'
+      - 'forwarding-rules'
+      - 'create'
+      - 'webapp-forwarding-rule'
+      - '--region'
+      - 'us-central1'
+      - '--ports'
+      - '3000'
+      - '--target-http-proxy'
+      - 'webapp-http-proxy'
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: 
+      - 'compute'
+      - 'target-http-proxies'
+      - 'create'
+      - 'webapp-http-proxy'
+      - '--url-map'
+      - 'webapp-url-map'
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: 
+      - 'compute'
+      - 'url-maps'
+      - 'create'
+      - 'webapp-url-map'
+      - '--default-service'
+      - 'cac-simple-webapp'
+
 images:
   - 'gcr.io/$PROJECT_ID/cac-simple-webapp:$COMMIT_SHA'
