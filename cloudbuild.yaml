@@ -15,8 +15,6 @@ steps:
       - 'cac-simple-webapp'
       - '--image'
       - 'gcr.io/$PROJECT_ID/cac-simple-webapp:$COMMIT_SHA'
-      - '--platform'
-      - 'gke'  # Deploy to GKE
       - '--cluster'
       - 'production'  # Replace with your GKE cluster name
       - '--cluster-location'
