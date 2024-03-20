@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cac-simple-webapp
+spec:
+  selector:
+    matchLabels:
+      app: cac-simple-webapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cac-simple-webapp
+    spec:
+      containers:
+      - name: cac-simple-webapp
+        image: gcr.io/$PROJECT_ID/cac-simple-webapp:$COMMIT_SHA
+        ports:
+        - containerPort: 3000
