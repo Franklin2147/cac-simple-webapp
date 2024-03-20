@@ -23,5 +23,12 @@ steps:
       - '--port'
       - '3000'  # Specify the port to expose
 
+  # Declaratie van de Kubernetes-service die fungeert als LoadBalancer op GKE
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: 
+      - 'apply'
+      - '-f'
+      - 'service.yaml' # Dit is het bestand met de service-specificaties
+
 images:
   - 'gcr.io/$PROJECT_ID/cac-simple-webapp:$COMMIT_SHA'
