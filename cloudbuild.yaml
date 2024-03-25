@@ -7,7 +7,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/cac-simple-webapp:$COMMIT_SHA']
 
-  # Deploy to Cloud Run as a load balancer service on GKE
+  # Deploy to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       - 'run'
@@ -16,13 +16,10 @@ steps:
       - '--image'
       - 'gcr.io/$PROJECT_ID/cac-simple-webapp:$COMMIT_SHA'
       - '--platform'
-      - 'gke'  # Deploy to GKE
-      - '--cluster'
-      - 'production'  # Replace with your GKE cluster name
-      - '--cluster-location'
-      - 'us-central1'  # Replace with your GKE cluster location
-      - '--namespace'
-      - 'green'  # Replace with your Kubernetes namespace
+      - 'managed'
+      - '--region'
+      - 'us-central1'      # Use a dynamically-set region for flexibility
+      - '--allow-unauthenticated'  # Optional: If your app doesn't require authentication
       - '--port'
       - '80'  # Specify the port to expose
 
