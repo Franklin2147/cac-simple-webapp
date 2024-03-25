@@ -3,10 +3,10 @@ kind: Deployment
 metadata:
   annotations:
     autopilot.gke.io/resource-adjustment: >-
-      {"input":{"containers":[{"name":"cac-simple-webapp-1"}]},"output":{"containers":[{"limits":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"cac-simple-webapp-1"}]},"modified":true}
+      {"input":{"containers":[{"name":"cac-simple-webapp-sha256-1"}]},"output":{"containers":[{"limits":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"cac-simple-webapp-sha256-1"}]},"modified":true}
     autopilot.gke.io/warden-version: 2.7.52
   labels:
-    app: cac-simple-webapp
+    app: cac-simple-webapp-blue
   managedFields:
     - apiVersion: apps/v1
       fieldsType: FieldsV1
@@ -33,7 +33,7 @@ metadata:
                 'f:app': {}
             'f:spec':
               'f:containers':
-                'k:{"name":"cac-simple-webapp-1"}':
+                'k:{"name":"cac-simple-webapp-sha256-1"}':
                   .: {}
                   'f:image': {}
                   'f:imagePullPolicy': {}
@@ -48,7 +48,7 @@ metadata:
               'f:terminationGracePeriodSeconds': {}
       manager: GoogleCloudConsole
       operation: Update
-      time: '2024-03-25T12:09:00Z'
+      time: '2024-03-25T12:31:28Z'
     - apiVersion: apps/v1
       fieldsType: FieldsV1
       fieldsV1:
@@ -82,14 +82,14 @@ metadata:
       manager: kube-controller-manager
       operation: Update
       subresource: status
-      time: '2024-03-25T12:10:43Z'
-  name: cac-simple-webapp
+      time: '2024-03-25T12:31:32Z'
+  name: cac-simple-webapp-blue
   namespace: blue
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: cac-simple-webapp
+      app: cac-simple-webapp-blue
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -98,12 +98,12 @@ spec:
   template:
     metadata:
       labels:
-        app: cac-simple-webapp
+        app: cac-simple-webapp-blue
     spec:
       containers:
         - image: gcr.io/driven-lore-415513/github.com/franklin2147/cac-simple-webapp
           imagePullPolicy: IfNotPresent
-          name: cac-simple-webapp-1
+          name: cac-simple-webapp-sha256-1
           resources:
             limits:
               cpu: 500m
@@ -130,7 +130,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   labels:
-    app: cac-simple-webapp
+    app: cac-simple-webapp-blue
   managedFields:
     - apiVersion: autoscaling/v2
       fieldsType: FieldsV1
@@ -149,7 +149,7 @@ metadata:
             'f:name': {}
       manager: GoogleCloudConsole
       operation: Update
-      time: '2024-03-25T12:09:00Z'
+      time: '2024-03-25T12:31:28Z'
     - apiVersion: autoscaling/v2
       fieldsType: FieldsV1
       fieldsV1:
@@ -163,28 +163,11 @@ metadata:
               'f:reason': {}
               'f:status': {}
               'f:type': {}
-            'k:{"type":"ScalingActive"}':
-              .: {}
-              'f:lastTransitionTime': {}
-              'f:message': {}
-              'f:reason': {}
-              'f:status': {}
-              'f:type': {}
-            'k:{"type":"ScalingLimited"}':
-              .: {}
-              'f:lastTransitionTime': {}
-              'f:message': {}
-              'f:reason': {}
-              'f:status': {}
-              'f:type': {}
-          'f:currentMetrics': {}
-          'f:currentReplicas': {}
-          'f:desiredReplicas': {}
       manager: vpa-recommender
       operation: Update
       subresource: status
-      time: '2024-03-25T12:12:01Z'
-  name: cac-simple-webapp-hpa-olqx
+      time: '2024-03-25T12:31:43Z'
+  name: cac-simple-webapp-blue-hpa-i4og
   namespace: blue
 spec:
   maxReplicas: 5
@@ -199,7 +182,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: cac-simple-webapp
+    name: cac-simple-webapp-blue
 ---
 apiVersion: v1
 kind: Service
@@ -209,7 +192,7 @@ metadata:
   finalizers:
     - service.kubernetes.io/load-balancer-cleanup
   labels:
-    app: cac-simple-webapp
+    app: cac-simple-webapp-blue
   managedFields:
     - apiVersion: v1
       fieldsType: FieldsV1
@@ -234,7 +217,7 @@ metadata:
           'f:type': {}
       manager: GoogleCloudConsole
       operation: Update
-      time: '2024-03-25T12:10:03Z'
+      time: '2024-03-25T12:29:22Z'
     - apiVersion: v1
       fieldsType: FieldsV1
       fieldsV1:
@@ -248,25 +231,25 @@ metadata:
       manager: cloud-controller-manager
       operation: Update
       subresource: status
-      time: '2024-03-25T12:10:33Z'
-  name: cac-simple-webapp-service
+      time: '2024-03-25T12:29:53Z'
+  name: cac-simple-webapp-blue-service
   namespace: blue
 spec:
   allocateLoadBalancerNodePorts: true
-  clusterIP: 34.118.230.111
+  clusterIP: 34.118.227.97
   clusterIPs:
-    - 34.118.230.111
+    - 34.118.227.97
   externalTrafficPolicy: Cluster
   internalTrafficPolicy: Cluster
   ipFamilies:
     - IPv4
   ipFamilyPolicy: SingleStack
   ports:
-    - nodePort: 30851
+    - nodePort: 31266
       port: 80
       protocol: TCP
       targetPort: 80
   selector:
-    app: cac-simple-webapp
+    app: cac-simple-webapp-blue
   sessionAffinity: None
   type: LoadBalancer
